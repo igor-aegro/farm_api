@@ -1,7 +1,5 @@
 package com.academy.aegrofarm.farm;
 
-import com.academy.aegrofarm.farm.glebe.Glebe;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -52,5 +50,15 @@ public class Farm {
 
     public void setGlebes(List<Glebe> glebes) {
         this.glebes = glebes;
+    }
+
+    @Override
+    public String toString() {
+        return "Farm{" +
+                "Id='" + Id + '\'' +
+                ", name='" + name + '\'' +
+                ", area=" + area +
+                ", glebes=" + glebes +
+                '}';
     }
 }
