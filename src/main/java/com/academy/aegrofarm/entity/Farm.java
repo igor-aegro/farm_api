@@ -1,8 +1,17 @@
-package com.academy.aegrofarm.farm;
+package com.academy.aegrofarm.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Farm {
 
     private String Id;
@@ -12,45 +21,6 @@ public class Farm {
     private BigDecimal area;
 
     private List<Glebe> glebes;
-
-    public Farm(String id, String name, BigDecimal area, List<Glebe> glebes) {
-        Id = id;
-        this.name = name;
-        this.area = area;
-        this.glebes = glebes;
-    }
-
-    public String getId() {
-        return Id;
-    }
-
-    public void setId(String id) {
-        Id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getArea() {
-        return area;
-    }
-
-    public void setArea(BigDecimal area) {
-        this.area = area;
-    }
-
-    public List<Glebe> getGlebes() {
-        return glebes;
-    }
-
-    public void setGlebes(List<Glebe> glebes) {
-        this.glebes = glebes;
-    }
 
     @Override
     public String toString() {
