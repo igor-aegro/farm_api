@@ -39,7 +39,6 @@ class AegrofarmApplicationTests {
 
 		Answer<Farm> repositoryAnswer = invocationOnMock -> {
 			Farm newFarm = createAValidFarm();
-			newFarm.setId("wrongId");
 			return newFarm;
 		};
 		Mockito.when(farmRepository.save(farm)).thenAnswer(repositoryAnswer);

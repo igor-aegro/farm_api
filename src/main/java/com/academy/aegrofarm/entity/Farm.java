@@ -18,7 +18,7 @@ import java.util.List;
 public class Farm {
 
     @Id
-    private String Id;
+    private String id;
 
     private String name;
 
@@ -29,7 +29,7 @@ public class Farm {
     @Override
     public String toString() {
         return "Farm{" +
-                "Id='" + Id + '\'' +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", area=" + area +
                 ", glebes=" + glebes +
