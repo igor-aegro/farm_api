@@ -36,7 +36,9 @@ public class FarmService {
         farmRepository.deleteById(id);
     }
 
-//    public Optional<Farm> getFarmById(String id) {
-//        return  farmRepository.findById(id);
-//    }
+    public Farm getFarmById(String id) {
+        Optional<Farm> farm = farmRepository.findById(id);
+        return farm.get();
+    }
+
 }

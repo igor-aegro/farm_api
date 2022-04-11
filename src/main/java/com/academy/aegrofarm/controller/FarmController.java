@@ -12,36 +12,36 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/farms")
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class FarmController {
 
     @Autowired
     private final FarmService farmService;
 
-    @GetMapping
+    @GetMapping("/farms")
     public List<Farm> getAllFarms(){
         return farmService.getAllFarms();
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/farm/{name}")
     public Farm getFarmByName(@PathVariable("name") String name){
         return farmService.getFarmByName(name);
     }
 
-//    @GetMapping("/{id}")
-//    public Optional<Farm> getFarmById(@PathVariable("id") String id){
-//        return farmService.getFarmById(id);
-//    }
+    @GetMapping("/farm/{id}")
+    public Farm getFarmById(@PathVariable("id") String id){
+        return farmService.getFarmById(id);
+    }
 
     @PostMapping
-    public ResponseEntity addFarm(@RequestBody Farm farm){
+    public ResponseEntity addFarm(Farm farm){
         farmService.addFarm(farm);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity updateFarm(@PathVariable("id") String id, @RequestBody Farm farm){
+    @PutMapping("/farm/{id}")
+    public ResponseEntity updateFarm(@PathVariable("id") String id, Farm farm){
         Farm updatedFarm = farmService.updateFarm(id, farm);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
