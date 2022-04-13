@@ -1,6 +1,7 @@
 package com.academy.aegrofarm.controller;
 
 import com.academy.aegrofarm.entity.Farm;
+import com.academy.aegrofarm.exception.ApiRequestException;
 import com.academy.aegrofarm.service.FarmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class FarmController {
 
     @GetMapping("/farms")
     public List<Farm> getAllFarms(){
+//        throw new ApiRequestException(("Não encontramos as fazendas!"));
         return farmService.getAllFarms();
     }
 
