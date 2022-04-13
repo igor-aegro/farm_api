@@ -15,16 +15,8 @@ public class FarmService {
 
     private final FarmRepository farmRepository;
 
-    public void addFarm(Farm farm){
-        farmRepository.insert(farm);
-    }
-
-    public List<Farm> getAllFarms() {
-        return farmRepository.findAll();
-    }
-
-    public Farm getFarmByName(String name) {
-        return farmRepository.findByName(name);
+    public Farm addFarm(Farm farm){
+        return farmRepository.insert(farm);
     }
 
     public Farm updateFarm(String id, @NotNull Farm farm) {
@@ -36,9 +28,5 @@ public class FarmService {
         farmRepository.deleteById(id);
     }
 
-    public Farm getFarmById(String id) {
-        Optional<Farm> farm = farmRepository.findById(id);
-        return farm.get();
-    }
 
 }

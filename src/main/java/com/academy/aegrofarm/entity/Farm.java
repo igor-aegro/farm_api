@@ -14,15 +14,13 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document("farm")
+@Document
 public class Farm {
 
     @Id
     private String id;
 
     private String name;
-
-    private BigDecimal area;
 
     private List<Glebe> glebes;
 
@@ -31,7 +29,6 @@ public class Farm {
         return "Farm{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", area=" + area +
                 ", glebes=" + glebes +
                 '}';
     }
