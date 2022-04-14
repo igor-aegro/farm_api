@@ -41,7 +41,31 @@ class FarmServiceTest {
 
         Farm addedFarm = farmService.addFarm(validFarm);
 
-        Assert.assertEquals(addedFarm.getId(), validFarm.getId());
+        Assert.assertEquals(addedFarm, validFarm);
+
+    }
+
+    @Test
+    void updateFarm_allGood_shouldPass() {
+
+        Farm validFarm = createAValidFarm();
+
+        Mockito.when(farmRepository.save(validFarm)).thenReturn(validFarm);
+
+        Farm addedFarm = farmService.updateFarm(validFarm.getId(), validFarm);
+
+        Assert.assertEquals(addedFarm, validFarm);
+
+    }
+
+    @Test
+    void deleteFarm_allGood_shouldPass() {
+
+        Farm validFarm = createAValidFarm();
+
+        farmService.deleteFarm(validFarm.getId());
+
+        Assert.assertFalse(farmRepository.existsById(validFarm.getId()));
 
     }
 

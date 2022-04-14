@@ -1,6 +1,7 @@
 package com.academy.aegrofarm.service;
 
 import com.academy.aegrofarm.entity.Farm;
+import com.academy.aegrofarm.exception.ApiRequestException;
 import com.academy.aegrofarm.repository.FarmRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -19,13 +20,14 @@ public class FarmService {
         return farmRepository.insert(farm);
     }
 
-    public Farm updateFarm(String id, @NotNull Farm farm) {
+    public Farm updateFarm(String id, Farm farm) {
         farm.setId(id);
         return farmRepository.save(farm);
     }
 
-    public void deleteFarm(String id) {
+    public boolean deleteFarm(String id) {
         farmRepository.deleteById(id);
+        return farmRepository.existsById(id);
     }
 
 
