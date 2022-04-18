@@ -5,16 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document
+@Document(collection = "farms")
 public class Farm {
 
     @Id
@@ -22,6 +22,7 @@ public class Farm {
 
     private String name;
 
+    @DBRef
     private List<Glebe> glebes;
 
     @Override
@@ -32,4 +33,5 @@ public class Farm {
                 ", glebes=" + glebes +
                 '}';
     }
+
 }
