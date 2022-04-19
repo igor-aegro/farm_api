@@ -16,10 +16,26 @@ public class GlebeController {
     @Autowired
     private final GlebeService glebeService;
 
-    @PostMapping("/{id}/glebe/")
-    public ResponseEntity addGlebe(@PathVariable("id") String id, @RequestBody Glebe glebe){
-        glebeService.addGlebe(id, glebe);
+    @PostMapping("/{farmId}/glebe/")
+    public ResponseEntity addGlebe(@PathVariable("farmId") String farmId, @RequestBody Glebe glebe){
+        glebeService.addGlebe(farmId, glebe);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @PutMapping("/{farmId}/glebe/{glebeId}")
+    public ResponseEntity updateGlebe(@PathVariable("farmId") String farmId,
+                                   @PathVariable("glebeId") String glebeId,
+                                   @RequestBody Glebe glebe){
+        Glebe updatedGlebe = glebeService.updateGlebe(farmId, glebeId, glebe);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("/{farmId}/glebe/{glebeId}")
+    public ResponseEntity deleteGlebe(@PathVariable("farmId") String farmId,
+                                      @PathVariable("glebeId") String glebeId){
+        glebeService.deleteGlebe(farmId, glebeId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 
 }

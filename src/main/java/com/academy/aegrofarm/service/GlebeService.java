@@ -8,6 +8,8 @@ import com.academy.aegrofarm.repository.GlebeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -18,11 +20,11 @@ public class GlebeService {
 
     private final GlebeRepository glebeRepository;
 
-    public void addGlebe(String id, Glebe glebe) {
+    public Glebe addGlebe(String farmId, Glebe glebe) {
 
         glebeRepository.insert(glebe);
 
-        Optional<Farm> optionalFarm = farmRepository.findById(id);
+        Optional<Farm> optionalFarm = farmRepository.findById(farmId);
 
         if(optionalFarm.isEmpty()){
             throw new ApiRequestException("Fazenda não encontrada para adicionar o novo talhão!");
@@ -33,5 +35,35 @@ public class GlebeService {
         farmToAddGlebe.getGlebes().add(glebe);
 
         farmRepository.save(farmToAddGlebe);
+
+        return glebe;
     }
+
+    public Glebe updateGlebe(String farmId, String glebeId, Glebe glebe) {
+        if(!(farmRepository.existsById(farmId) && glebeRepository.existsById(glebeId))){
+            throw new ApiRequestException("Talhão não encontrado!");
+        }
+        glebe.setId(glebeId);
+        return glebeRepository.save(glebe);
+    }
+
+    public boolean deleteGlebe(String farmId, String glebeId) {
+        if(!farmRepository.existsById(farmId)){
+            throw new ApiRequestException("Essa fazenda não existe! Por favor, tente mais tarde!");
+        }
+
+        if(!glebeRepository.existsById(glebeId)){
+            throw new ApiRequestException("Esse talhão não existe! Por favor, tente mais tarde!");
+        }
+
+        Farm farm = farmRepository.findById(farmId).get();
+        List<Glebe> glebes = farm.getGlebes();
+        glebes.removeIf(it -> it.getId().equals(glebeId));
+        farm.setGlebes(glebes);
+        farmRepository.save(farm);
+        glebeRepository.deleteById(glebeId);
+
+        return  glebeRepository.existsById(glebeId);
+    }
+
 }

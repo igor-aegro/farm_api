@@ -30,7 +30,6 @@ public class FarmController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteFarm(@PathVariable("id") String id){
-        // TODO INSERT EXCEPTION IF ID NOT FOUND (VERIFY IF PUT IN CONTROLLER OR SERVICE)
         farmService.deleteFarm(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

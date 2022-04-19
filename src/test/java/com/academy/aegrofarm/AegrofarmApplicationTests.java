@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 @SpringBootTest
 class AegrofarmApplicationTests {
-
 	@Test
 	void contextLoads(){}
 
