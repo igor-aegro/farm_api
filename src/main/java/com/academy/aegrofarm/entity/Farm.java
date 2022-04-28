@@ -22,7 +22,7 @@ public class Farm {
 
     private String name;
 
-    @DBRef
+    @DBRef(lazy = true)
     private List<Glebe> glebes;
 
     @Override

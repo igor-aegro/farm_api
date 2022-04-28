@@ -4,6 +4,7 @@ import com.academy.aegrofarm.entity.Farm;
 import com.academy.aegrofarm.repository.FarmRepository;
 import com.academy.aegrofarm.service.FarmService;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -65,7 +66,7 @@ class FarmServiceTest {
 
         farmService.deleteFarm(validFarm.getId());
 
-        Assert.assertFalse(farmRepository.existsById(validFarm.getId()));
+        Assertions.assertFalse(farmRepository.existsById(validFarm.getId()));
 
     }
 
