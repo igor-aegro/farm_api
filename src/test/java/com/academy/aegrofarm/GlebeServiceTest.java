@@ -6,8 +6,6 @@ import com.academy.aegrofarm.repository.FarmRepository;
 import com.academy.aegrofarm.repository.GlebeRepository;
 import com.academy.aegrofarm.service.FarmService;
 import com.academy.aegrofarm.service.GlebeService;
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -95,23 +93,23 @@ public class GlebeServiceTest {
 //
 //    }
 
-    @Test
-    void calculateGlebeProductivity_allGood_shouldPass(){
-        Glebe validGlebe = createAValidGlebe();
-
-        BigDecimal productivity = glebeService.calculateGlebeProductivity(validGlebe);
-
-        Assert.assertEquals(productivity, new BigDecimal("15"));
-    }
-
-    @Test
-    void calculateGlebeProductivity_emptyProduction_shouldReturnZero(){
-        Glebe validGlebe = createAValidGlebe();
-        validGlebe.setProduction(new ArrayList<>());
-
-        BigDecimal productivity = glebeService.calculateGlebeProductivity(validGlebe);
-
-        Assert.assertEquals(productivity, BigDecimal.ZERO);
-    }
+//    @Test
+//    void calculateGlebeProductivity_allGood_shouldPass(){
+//        Glebe validGlebe = createAValidGlebe();
+//
+//        BigDecimal productivity = glebeService.calculateGlebeProductivity(validGlebe);
+//
+//        Assert.assertEquals(productivity, new BigDecimal("15"));
+//    }
+//
+//    @Test
+//    void calculateGlebeProductivity_emptyProduction_shouldReturnZero(){
+//        Glebe validGlebe = createAValidGlebe();
+//        validGlebe.setProduction(new ArrayList<>());
+//
+//        BigDecimal productivity = glebeService.calculateGlebeProductivity(validGlebe);
+//
+//        Assert.assertEquals(productivity, BigDecimal.ZERO);
+//    }
 
 }

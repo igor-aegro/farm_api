@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
@@ -24,7 +25,8 @@ public class Glebe {
 
     private BigDecimal area;
 
-    private List<BigDecimal> production;
+    @DBRef(lazy = true)
+    private List<Production> productions;
 
     private BigDecimal productivity;
 
@@ -34,7 +36,7 @@ public class Glebe {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", area=" + area +
-                ", production=" + production +
+                ", productions=" + productions +
                 ", productivity=" + productivity +
                 '}';
     }

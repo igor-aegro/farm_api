@@ -8,10 +8,7 @@ import com.academy.aegrofarm.repository.GlebeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -68,16 +65,16 @@ public class GlebeService {
         return  glebeRepository.existsById(glebeId);
     }
 
-    public BigDecimal calculateGlebeProductivity(Glebe glebe){
-        List<BigDecimal> productions = glebe.getProduction();
-
-        if(productions.isEmpty()){ return BigDecimal.ZERO; }
-
-        BigDecimal totalProduction = productions.stream()
-                                    .map(Objects::requireNonNull)
-                                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        return totalProduction.divide(new BigDecimal(productions.size()), RoundingMode.HALF_UP);
-    }
+//    public BigDecimal calculateGlebeProductivity(Glebe glebe){
+//        List<BigDecimal> productions = glebe.getProduction();
+//
+//        if(productions.isEmpty()){ return BigDecimal.ZERO; }
+//
+//        BigDecimal totalProduction = productions.stream()
+//                                    .map(Objects::requireNonNull)
+//                                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+//
+//        return totalProduction.divide(new BigDecimal(productions.size()), RoundingMode.HALF_UP);
+//    }
 
 }
