@@ -26,6 +26,8 @@ public class Glebe {
 
     private List<BigDecimal> production;
 
+    private BigDecimal productivity;
+
     @Override
     public String toString() {
         return "Glebe{" +
@@ -33,7 +35,7 @@ public class Glebe {
                 ", name='" + name + '\'' +
                 ", area=" + area +
                 ", production=" + production +
+                ", productivity=" + productivity +
                 '}';
     }
-
 }
