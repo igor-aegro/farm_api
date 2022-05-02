@@ -65,16 +65,4 @@ public class GlebeService {
         return  glebeRepository.existsById(glebeId);
     }
 
-//    public BigDecimal calculateGlebeProductivity(Glebe glebe){
-//        List<BigDecimal> productions = glebe.getProduction();
-//
-//        if(productions.isEmpty()){ return BigDecimal.ZERO; }
-//
-//        BigDecimal totalProduction = productions.stream()
-//                                    .map(Objects::requireNonNull)
-//                                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-//
-//        return totalProduction.divide(new BigDecimal(productions.size()), RoundingMode.HALF_UP);
-//    }
-
 }
