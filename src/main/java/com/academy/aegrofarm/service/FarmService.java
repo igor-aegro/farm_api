@@ -2,13 +2,16 @@ package com.academy.aegrofarm.service;
 
 import com.academy.aegrofarm.entity.Farm;
 import com.academy.aegrofarm.entity.Glebe;
+import com.academy.aegrofarm.exception.ApiRequestException;
 import com.academy.aegrofarm.repository.FarmRepository;
 import com.academy.aegrofarm.repository.GlebeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +32,14 @@ public class FarmService {
     }
 
     public boolean deleteFarm(String id) {
-        Farm farmToExclude = farmRepository.findById(id).get();
+
+        Optional<Farm> farmOptional = farmRepository.findById(id);
+
+        if(!farmOptional.isPresent()) {
+            throw new ApiRequestException("Fazenda não encontrada!");
+        }
+
+        Farm farmToExclude = farmOptional.get();
         List<Glebe> glebes = farmToExclude.getGlebes();
         List<String> glebesIds = glebes.stream()
                                 .map(Glebe::getId)
@@ -38,6 +48,18 @@ public class FarmService {
         farmToExclude.setGlebes(new ArrayList<>());
         farmRepository.deleteById(id);
         return farmRepository.existsById(id);
+    }
+
+    public BigDecimal calculateFarmProductivity(String id) {
+        Farm farm = farmRepository.findById(id).get();
+        BigDecimal productivity = farm.getGlebes().stream()
+                .map(Glebe::getProductivity)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        farm.setProductivity(productivity);
+        farmRepository.save(farm);
+
+        return productivity;
     }
 
 }

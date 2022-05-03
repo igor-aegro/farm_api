@@ -51,10 +51,6 @@ public class GlebeService {
             throw new ApiRequestException("Essa fazenda não existe! Por favor, tente mais tarde!");
         }
 
-        if(!glebeRepository.existsById(glebeId)){
-            throw new ApiRequestException("Esse talhão não existe! Por favor, tente mais tarde!");
-        }
-
         Farm farm = farmRepository.findById(farmId).get();
         List<Glebe> glebes = farm.getGlebes();
         glebes.removeIf(it -> it.getId().equals(glebeId));
