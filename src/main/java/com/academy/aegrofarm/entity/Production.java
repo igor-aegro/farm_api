@@ -5,37 +5,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "farms")
-public class Farm {
+@Document(collection = "productions")
+public class Production {
 
     @Id
     private String id;
 
-    private String name;
-
-    @DBRef(lazy = true)
-    private List<Glebe> glebes;
-
-    private BigDecimal productivity;
+    private BigDecimal production;
 
     @Override
     public String toString() {
-        return "Farm{" +
+        return "Production{" +
                 "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", glebes=" + glebes +
-                ", productivity=" + productivity +
+                ", production=" + production +
                 '}';
     }
-
 }
