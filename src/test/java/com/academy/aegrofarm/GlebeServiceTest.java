@@ -2,27 +2,29 @@ package com.academy.aegrofarm;
 
 import com.academy.aegrofarm.entity.Farm;
 import com.academy.aegrofarm.entity.Glebe;
+import com.academy.aegrofarm.entity.Production;
 import com.academy.aegrofarm.repository.FarmRepository;
 import com.academy.aegrofarm.repository.GlebeRepository;
-import com.academy.aegrofarm.service.FarmService;
 import com.academy.aegrofarm.service.GlebeService;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class GlebeServiceTest {
 
     @Mock
     private FarmRepository farmRepository;
-
-    @InjectMocks
-    private FarmService farmService;
 
     @Mock
     private GlebeRepository glebeRepository;
@@ -46,52 +48,57 @@ public class GlebeServiceTest {
         glebe.setId("glebeTestId");
         glebe.setName("Talhão de teste");
         glebe.setArea(new BigDecimal("340.0056"));
-        List<BigDecimal> production = new ArrayList<>();
-        production.add(new BigDecimal("10"));
-        production.add(new BigDecimal("20"));
-        glebe.setProduction(production);
+        List<Production> productions = new ArrayList<>();
+        glebe.setProductions(productions);
 
         return glebe;
     }
 
-//    @Test
-//    void addGlebe_allGood_shouldPass() {
-//
-//        Glebe validGlebe = createAValidGlebe();
-//
-//        Mockito.when(glebeRepository.insert(validGlebe)).thenReturn(validGlebe);
-//
-//        Glebe addedGlebe = Mockito.when(GlebeService.addGlebe("testId", validGlebe)).thenReturn(validGlebe);
-//
-//        Assert.assertEquals(addedGlebe, validGlebe);
-//
-//    }
-//
-//    @Test
-//    void updateGlebe_allGood_shouldPass() {
-//
-//        Glebe validGlebe = createAValidGlebe();
-//        Farm validFarm = createAValidFarm();
-//
-//        Mockito.when(glebeRepository.save(validGlebe)).thenReturn(validGlebe);
-//
-//        Glebe addedGlebe = glebeService.updateGlebe(validFarm.getId(), validGlebe.getId(), validGlebe);
-//
-//        Assert.assertEquals(addedGlebe, validGlebe);
-//
-//    }
-//
-//    @Test
-//    void deleteGlebe_allGood_shouldPass() {
-//
-//        Glebe validGlebe = createAValidGlebe();
-//        Farm validFarm = createAValidFarm();
-//
-//        glebeService.deleteGlebe(validFarm.getId(), validGlebe.getId());
-//
-//        Assert.assertFalse(glebeRepository.existsById(validGlebe.getId()));
-//
-//    }
+    @Test
+    void addGlebe_allGood_shouldPass() {
+
+        Farm validFarm = createAValidFarm();
+        Glebe validGlebe = createAValidGlebe();
+
+        Mockito.when(glebeRepository.insert(validGlebe)).thenReturn(validGlebe);
+
+        Mockito.when(farmRepository.findById(validFarm.getId())).thenReturn(Optional.of(validFarm));
+
+        Glebe addedGlebe = glebeService.addGlebe(validFarm.getId(), validGlebe);
+
+        Assert.assertEquals(addedGlebe, validGlebe);
+
+    }
+
+    @Test
+    void updateGlebe_allGood_shouldPass() {
+
+        Glebe validGlebe = createAValidGlebe();
+        Farm validFarm = createAValidFarm();
+
+        Mockito.when(farmRepository.existsById(validFarm.getId())).thenReturn(true);
+        Mockito.when(glebeRepository.existsById(validGlebe.getId())).thenReturn(true);
+        Mockito.when(glebeRepository.save(validGlebe)).thenReturn(validGlebe);
+
+        Glebe addedGlebe = glebeService.updateGlebe(validFarm.getId(), validGlebe.getId(), validGlebe);
+
+        Assert.assertEquals(addedGlebe, validGlebe);
+
+    }
+
+    @Test
+    void deleteGlebe_allGood_shouldPass() {
+
+        Glebe validGlebe = createAValidGlebe();
+        Farm validFarm = createAValidFarm();
+
+        Mockito.when(farmRepository.findById(validFarm.getId())).thenReturn(Optional.of(validFarm));
+        Mockito.when(farmRepository.existsById(validFarm.getId())).thenReturn(true);
+        boolean existsGlebe = glebeService.deleteGlebe(validFarm.getId(), validGlebe.getId());
+
+        Assertions.assertFalse(existsGlebe);
+
+    }
 
 //    @Test
 //    void calculateGlebeProductivity_allGood_shouldPass(){

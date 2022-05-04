@@ -3,6 +3,7 @@ package com.academy.aegrofarm;
 import com.academy.aegrofarm.controller.GlebeController;
 import com.academy.aegrofarm.entity.Farm;
 import com.academy.aegrofarm.entity.Glebe;
+import com.academy.aegrofarm.entity.Production;
 import com.academy.aegrofarm.service.FarmService;
 import com.academy.aegrofarm.service.GlebeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,10 +51,8 @@ public class GlebeControllerTest {
         glebe.setId("glebeTestId");
         glebe.setName("Talhão de teste");
         glebe.setArea(new BigDecimal("340.0056"));
-        List<BigDecimal> production = new ArrayList<>();
-        production.add(new BigDecimal("10"));
-        production.add(new BigDecimal("20"));
-        glebe.setProduction(production);
+        List<Production> productions = new ArrayList<>();
+        glebe.setProductions(productions);
 
         return glebe;
     }
