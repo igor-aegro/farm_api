@@ -6,6 +6,7 @@ import com.academy.aegrofarm.repository.GlebeRepository;
 import com.academy.aegrofarm.repository.ProductionRepository;
 import com.academy.aegrofarm.service.ProductionService;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +37,10 @@ public class ProductionServiceTest {
         glebe.setId("testId");
         glebe.setName("Talhão de teste");
         glebe.setArea(new BigDecimal("100"));
-        glebe.setProductions(new ArrayList<>());
+        List<Production> productions = new ArrayList<>();
+        Production production = new Production("testProdId", new BigDecimal("5000"));
+        productions.add(production);
+        glebe.setProductions(productions);
 
         return glebe;
     }
@@ -79,37 +84,39 @@ public class ProductionServiceTest {
 
     }
 
-//    @Test
-//    void deleteProduction_allGood_shouldPass() {
-//
-//        Production validProduction = createAValidProduction();
-//        Glebe validGlebe = createAValidGlebe();
-//
-//        Mockito.when(glebeRepository.findById(validGlebe.getId())).thenReturn(Optional.of(validGlebe));
-//        Mockito.when(productionRepository.existsById(validProduction.getId())).thenReturn(true);
-//        boolean existsProduction = productionService.deleteProduction(validGlebe.getId(), validProduction.getId());
-//
-//        Assertions.assertFalse(existsProduction);
-//
-//    }
+    @Test
+    void deleteProduction_allGood_shouldPass() {
 
-//    @Test
-//    void calculateGlebeProductivity_allGood_shouldPass(){
-//        Glebe validGlebe = createAValidGlebe();
-//
-//        BigDecimal productivity = glebeService.calculateGlebeProductivity(validGlebe);
-//
-//        Assert.assertEquals(productivity, new BigDecimal("15"));
-//    }
-//
-//    @Test
-//    void calculateGlebeProductivity_emptyProduction_shouldReturnZero(){
-//        Glebe validGlebe = createAValidGlebe();
-//        validGlebe.setProduction(new ArrayList<>());
-//
-//        BigDecimal productivity = glebeService.calculateGlebeProductivity(validGlebe);
-//
-//        Assert.assertEquals(productivity, BigDecimal.ZERO);
-//    }
+        Production validProduction = createAValidProduction();
+        Glebe validGlebe = createAValidGlebe();
+
+        Mockito.when(glebeRepository.findById(validGlebe.getId())).thenReturn(Optional.of(validGlebe));
+        Mockito.when(glebeRepository.save(validGlebe)).thenReturn(validGlebe);
+        boolean existsProduction = productionService.deleteProduction(validGlebe.getId(), validProduction.getId());
+
+        Assertions.assertFalse(existsProduction);
+
+    }
+
+    @Test
+    void calculateGlebeProductivity_allGood_shouldPass(){
+        Glebe validGlebe = createAValidGlebe();
+
+        Mockito.when(glebeRepository.findById(validGlebe.getId())).thenReturn(Optional.of(validGlebe));
+        BigDecimal productivity = productionService.calculateGlebeProductivity(validGlebe.getId());
+
+        Assert.assertEquals(productivity, new BigDecimal("50"));
+    }
+
+    @Test
+    void calculateGlebeProductivity_emptyProduction_shouldReturnZero(){
+        Glebe validGlebe = createAValidGlebe();
+        validGlebe.setProductions(new ArrayList<>());
+
+        Mockito.when(glebeRepository.findById(validGlebe.getId())).thenReturn(Optional.of(validGlebe));
+        BigDecimal productivity = productionService.calculateGlebeProductivity(validGlebe.getId());
+
+        Assert.assertEquals(productivity, BigDecimal.ZERO);
+    }
 
 }

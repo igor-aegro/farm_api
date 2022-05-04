@@ -50,10 +50,6 @@ public class ProductionService {
     }
 
     public boolean deleteProduction(String glebeId, String productionId) {
-        if(!productionRepository.existsById(productionId)){
-            throw new ApiRequestException("Produção não existe!");
-        }
-
         Glebe glebe = glebeRepository.findById(glebeId).get();
         List<Production> productions = glebe.getProductions();
         productions.removeIf(production -> production.getId().equals(productionId));
