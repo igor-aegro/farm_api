@@ -100,23 +100,4 @@ public class GlebeServiceTest {
 
     }
 
-//    @Test
-//    void calculateGlebeProductivity_allGood_shouldPass(){
-//        Glebe validGlebe = createAValidGlebe();
-//
-//        BigDecimal productivity = glebeService.calculateGlebeProductivity(validGlebe);
-//
-//        Assert.assertEquals(productivity, new BigDecimal("15"));
-//    }
-//
-//    @Test
-//    void calculateGlebeProductivity_emptyProduction_shouldReturnZero(){
-//        Glebe validGlebe = createAValidGlebe();
-//        validGlebe.setProduction(new ArrayList<>());
-//
-//        BigDecimal productivity = glebeService.calculateGlebeProductivity(validGlebe);
-//
-//        Assert.assertEquals(productivity, BigDecimal.ZERO);
-//    }
-
 }

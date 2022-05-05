@@ -19,7 +19,7 @@ public class ProductionService {
 
     private final GlebeRepository glebeRepository;
     private final ProductionRepository productionRepository;
-    public void addProduction(String glebeId, Production production) {
+    public Production addProduction(String glebeId, Production production) {
         productionRepository.insert(production);
 
         Optional<Glebe> optionalGlebe = glebeRepository.findById(glebeId);
@@ -36,6 +36,7 @@ public class ProductionService {
 
         calculateGlebeProductivity(glebeId);
 
+        return production;
     }
 
     public Production updateProduction(String glebeId, String productionId, Production production) {
@@ -49,10 +50,6 @@ public class ProductionService {
     }
 
     public boolean deleteProduction(String glebeId, String productionId) {
-        if(!productionRepository.existsById(productionId)){
-            throw new ApiRequestException("Produção não existe!");
-        }
-
         Glebe glebe = glebeRepository.findById(glebeId).get();
         List<Production> productions = glebe.getProductions();
         productions.removeIf(production -> production.getId().equals(productionId));
