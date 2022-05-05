@@ -2,7 +2,7 @@ package com.academy.aegrofarm.service;
 
 import com.academy.aegrofarm.entity.Glebe;
 import com.academy.aegrofarm.entity.Production;
-import com.academy.aegrofarm.exception.ApiRequestException;
+import com.academy.aegrofarm.exception.ObjectNotFoundException;
 import com.academy.aegrofarm.repository.GlebeRepository;
 import com.academy.aegrofarm.repository.ProductionRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +19,22 @@ public class ProductionService {
 
     private final GlebeRepository glebeRepository;
     private final ProductionRepository productionRepository;
+
+    public List<Production> getProductionsFromGlebe(String glebeId) {
+        return glebeRepository.findById(glebeId).get().getProductions();
+    }
+
+    public Production getProductionById(String id) {
+        return productionRepository.findById(id).get();
+    }
+
     public Production addProduction(String glebeId, Production production) {
         productionRepository.insert(production);
 
         Optional<Glebe> optionalGlebe = glebeRepository.findById(glebeId);
 
         if(optionalGlebe.isEmpty()){
-            throw new ApiRequestException("Talhão não encontrado!");
+            throw new ObjectNotFoundException("Talhão não encontrado!");
         }
 
         Glebe glebeToAddProduction = optionalGlebe.get();
@@ -41,7 +50,7 @@ public class ProductionService {
 
     public Production updateProduction(String glebeId, String productionId, Production production) {
         if(!productionRepository.existsById(productionId)){
-            throw new ApiRequestException("Produção não encontrada!");
+            throw new ObjectNotFoundException("Produção não encontrada!");
         }
         production.setId(productionId);
         Production updatedProduction = productionRepository.save(production);

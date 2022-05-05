@@ -2,7 +2,7 @@ package com.academy.aegrofarm.service;
 
 import com.academy.aegrofarm.entity.Farm;
 import com.academy.aegrofarm.entity.Glebe;
-import com.academy.aegrofarm.exception.ApiRequestException;
+import com.academy.aegrofarm.exception.ObjectNotFoundException;
 import com.academy.aegrofarm.repository.FarmRepository;
 import com.academy.aegrofarm.repository.GlebeRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +22,18 @@ public class FarmService {
 
     private final GlebeRepository glebeRepository;
 
+    public List<Farm> getFarms() {
+        return farmRepository.findAll();
+    }
+
+    public Farm getFarmById(String id) {
+        Optional<Farm> farm = farmRepository.findById(id);
+        if(farm.isEmpty()) {
+            throw new ObjectNotFoundException("Fazenda não encontrada!");
+        }
+        return farm.get();
+    }
+
     public Farm addFarm(Farm farm){
         return farmRepository.insert(farm);
     }
@@ -36,7 +48,7 @@ public class FarmService {
         Optional<Farm> farmOptional = farmRepository.findById(id);
 
         if(!farmOptional.isPresent()) {
-            throw new ApiRequestException("Fazenda não encontrada!");
+            throw new ObjectNotFoundException("Fazenda não encontrada!");
         }
 
         Farm farmToExclude = farmOptional.get();

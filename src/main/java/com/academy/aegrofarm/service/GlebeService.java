@@ -2,7 +2,7 @@ package com.academy.aegrofarm.service;
 
 import com.academy.aegrofarm.entity.Farm;
 import com.academy.aegrofarm.entity.Glebe;
-import com.academy.aegrofarm.exception.ApiRequestException;
+import com.academy.aegrofarm.exception.ObjectNotFoundException;
 import com.academy.aegrofarm.repository.FarmRepository;
 import com.academy.aegrofarm.repository.GlebeRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class GlebeService {
         Optional<Farm> optionalFarm = farmRepository.findById(farmId);
 
         if(optionalFarm.isEmpty()){
-            throw new ApiRequestException("Fazenda não encontrada para adicionar o novo talhão!");
+            throw new ObjectNotFoundException("Fazenda não encontrada para adicionar o novo talhão!");
         }
 
         Farm farmToAddGlebe = optionalFarm.get();
@@ -40,7 +40,7 @@ public class GlebeService {
 
     public Glebe updateGlebe(String farmId, String glebeId, Glebe glebe) {
         if(!(farmRepository.existsById(farmId) && glebeRepository.existsById(glebeId))){
-            throw new ApiRequestException("Talhão não encontrado!");
+            throw new ObjectNotFoundException("Talhão não encontrado!");
         }
         glebe.setId(glebeId);
         return glebeRepository.save(glebe);
@@ -48,7 +48,7 @@ public class GlebeService {
 
     public boolean deleteGlebe(String farmId, String glebeId) {
         if(!farmRepository.existsById(farmId)){
-            throw new ApiRequestException("Essa fazenda não existe! Por favor, tente mais tarde!");
+            throw new ObjectNotFoundException("Essa fazenda não existe! Por favor, tente mais tarde!");
         }
 
         Farm farm = farmRepository.findById(farmId).get();
@@ -59,6 +59,14 @@ public class GlebeService {
         glebeRepository.deleteById(glebeId);
 
         return  glebeRepository.existsById(glebeId);
+    }
+
+    public List<Glebe> getGlebes() {
+        return glebeRepository.findAll();
+    }
+
+    public Glebe getGlebeById(String id) {
+        return glebeRepository.findById(id).get();
     }
 
 }

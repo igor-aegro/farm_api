@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/farms")
 @RequiredArgsConstructor
@@ -15,6 +17,16 @@ public class FarmController {
 
     @Autowired
     private final FarmService farmService;
+
+    @GetMapping
+    public List<Farm> getFarms() {
+        return farmService.getFarms();
+    }
+
+    @GetMapping("/{id}")
+    public Farm getFarmById(@PathVariable String id){
+        return farmService.getFarmById(id);
+    }
 
     @PostMapping
     public ResponseEntity addFarm(@RequestBody Farm farm){
