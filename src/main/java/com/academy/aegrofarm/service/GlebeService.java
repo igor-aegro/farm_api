@@ -22,6 +22,19 @@ public class GlebeService {
         this.glebeRepository = glebeRepository;
     }
 
+
+    public List<Glebe> getGlebes() {
+        return glebeRepository.findAll();
+    }
+
+    public Glebe getGlebeById(String id) {
+        Optional<Glebe> glebe = glebeRepository.findById(id);
+        if(glebe.isEmpty()) {
+            throw new ObjectNotFoundException("Talhão não não encontrado!");
+        }
+        return glebe.get();
+    }
+
     public Glebe addGlebe(String farmId, Glebe glebe) {
 
         glebeRepository.insert(glebe);
@@ -64,12 +77,5 @@ public class GlebeService {
         return  glebeRepository.existsById(glebeId);
     }
 
-    public List<Glebe> getGlebes() {
-        return glebeRepository.findAll();
-    }
-
-    public Glebe getGlebeById(String id) {
-        return glebeRepository.findById(id).get();
-    }
 
 }

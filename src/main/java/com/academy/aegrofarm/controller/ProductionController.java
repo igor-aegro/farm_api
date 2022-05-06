@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("api/v1")
 public class ProductionController {
@@ -18,11 +16,6 @@ public class ProductionController {
 
     public ProductionController(ProductionService productionService) {
         this.productionService = productionService;
-    }
-
-    @GetMapping("glebes/{glebeId}/productions")
-    public List<Production> getProductionsFromGlebe(@PathVariable String glebeId){
-        return productionService.getProductionsFromGlebe(glebeId);
     }
 
     @GetMapping("/production/{id}")
