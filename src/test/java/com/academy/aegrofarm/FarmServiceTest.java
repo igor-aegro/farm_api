@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +37,21 @@ class FarmServiceTest {
         farm.setGlebes(new ArrayList<Glebe>());
 
         return farm;
+    }
+
+    @Test
+    void getFarms_allGood_shouldPass() {
+
+        Farm validFarm = createAValidFarm();
+        List<Farm> farms = new ArrayList<>();
+        farms.add(validFarm);
+
+        Mockito.when(farmRepository.findAll()).thenReturn(farms);
+
+        List<Farm> addedFarm = farmService.getFarms();
+
+        Assert.assertEquals(addedFarm, farms);
+
     }
 
     @Test

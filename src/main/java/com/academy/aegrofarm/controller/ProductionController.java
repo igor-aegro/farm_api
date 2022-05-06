@@ -8,21 +8,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/glebes")
+@RequestMapping("api/v1")
 public class ProductionController {
 
     @Autowired
     private final ProductionService productionService;
 
-    @PostMapping("/{glebeId}/production/")
+    @GetMapping("glebes/{glebeId}/productions")
+    public List<Production> getProductionsFromGlebe(@PathVariable String glebeId){
+        return productionService.getProductionsFromGlebe(glebeId);
+    }
+
+    @GetMapping("/production/{id}")
+    public Production getProductionById(@PathVariable String id){
+        return productionService.getProductionById(id);
+    }
+
+    @PostMapping("/glebes/{glebeId}/production/")
     public ResponseEntity addProduction(@PathVariable("glebeId") String glebeId, @RequestBody Production production){
         productionService.addProduction(glebeId, production);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{glebeId}/production/{productionId}")
+    @PutMapping("/glebes/{glebeId}/production/{productionId}")
     public ResponseEntity updateProduction(@PathVariable("glebeId") String glebeId,
                                       @PathVariable("productionId") String productionId,
                                       @RequestBody Production production){
@@ -30,7 +42,7 @@ public class ProductionController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/{glebeId}/production/{productionId}")
+    @DeleteMapping("/glebes/{glebeId}/production/{productionId}")
     public ResponseEntity deleteProduction(@PathVariable("glebeId") String glebeId,
                                       @PathVariable("productionId") String productionId){
         productionService.deleteProduction(glebeId, productionId);

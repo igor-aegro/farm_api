@@ -55,6 +55,19 @@ public class GlebeServiceTest {
     }
 
     @Test
+    void getGlebes_allGood_shouldPass() {
+        Glebe validGlebe = createAValidGlebe();
+        List<Glebe> glebes = new ArrayList<>();
+        glebes.add(validGlebe);
+
+        Mockito.when(glebeRepository.findAll()).thenReturn(glebes);
+
+        List<Glebe> addedGlebe = glebeService.getGlebes();
+
+        Assert.assertEquals(addedGlebe, glebes);
+    }
+
+    @Test
     void addGlebe_allGood_shouldPass() {
 
         Farm validFarm = createAValidFarm();

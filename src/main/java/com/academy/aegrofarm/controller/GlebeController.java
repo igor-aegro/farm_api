@@ -8,21 +8,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/farms")
+@RequestMapping("api/v1")
 public class GlebeController {
 
     @Autowired
     private final GlebeService glebeService;
 
-    @PostMapping("/{farmId}/glebe/")
+    @GetMapping("/glebes")
+    public List<Glebe> getGlebes(){
+        return glebeService.getGlebes();
+    }
+
+    @GetMapping("/glebe/{id}")
+    public Glebe getGlebeById(@PathVariable String id){
+        return glebeService.getGlebeById(id);
+    }
+
+    @PostMapping("/farms/{farmId}/glebe/")
     public ResponseEntity addGlebe(@PathVariable("farmId") String farmId, @RequestBody Glebe glebe){
         glebeService.addGlebe(farmId, glebe);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{farmId}/glebe/{glebeId}")
+    @PutMapping("/farms/{farmId}/glebe/{glebeId}")
     public ResponseEntity updateGlebe(@PathVariable("farmId") String farmId,
                                    @PathVariable("glebeId") String glebeId,
                                    @RequestBody Glebe glebe){
@@ -30,7 +42,7 @@ public class GlebeController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/{farmId}/glebe/{glebeId}")
+    @DeleteMapping("/farms/{farmId}/glebe/{glebeId}")
     public ResponseEntity deleteGlebe(@PathVariable("farmId") String farmId,
                                       @PathVariable("glebeId") String glebeId){
         glebeService.deleteGlebe(farmId, glebeId);
