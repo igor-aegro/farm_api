@@ -56,17 +56,6 @@ public class ProductionServiceTest {
     }
 
     @Test
-    void getProductionsFromGlebe_allGood_shouldPass() {
-        Glebe validGlebe = createAValidGlebe();
-
-        Mockito.when(glebeRepository.findById(validGlebe.getId())).thenReturn(Optional.of(validGlebe));
-
-        List<Production> addedProduction = productionService.getProductionsFromGlebe(validGlebe.getId());
-
-        Assert.assertEquals(addedProduction, validGlebe.getProductions());
-    }
-
-    @Test
     void addProduction_allGood_shouldPass() {
 
         Glebe validGlebe = createAValidGlebe();

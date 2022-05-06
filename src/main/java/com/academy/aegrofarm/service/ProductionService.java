@@ -23,12 +23,12 @@ public class ProductionService {
         this.productionRepository = productionRepository;
     }
 
-    public List<Production> getProductionsFromGlebe(String glebeId) {
-        return glebeRepository.findById(glebeId).get().getProductions();
-    }
-
     public Production getProductionById(String id) {
-        return productionRepository.findById(id).get();
+        Optional<Production> optionalProduction = productionRepository.findById(id);
+        if(optionalProduction.isEmpty()){
+            throw new ObjectNotFoundException("Talhão não encontrado!");
+        }
+        return optionalProduction.get();
     }
 
     public Production addProduction(String glebeId, Production production) {
@@ -62,7 +62,12 @@ public class ProductionService {
     }
 
     public boolean deleteProduction(String glebeId, String productionId) {
-        Glebe glebe = glebeRepository.findById(glebeId).get();
+        Optional<Glebe> optionalGlebe = glebeRepository.findById(glebeId);
+
+        if(optionalGlebe.isEmpty()){
+            throw new ObjectNotFoundException("Talhão não encontrado!");
+        }
+        Glebe glebe = optionalGlebe.get();
         List<Production> productions = glebe.getProductions();
         productions.removeIf(production -> production.getId().equals(productionId));
         glebe.setProductions(productions);
@@ -74,8 +79,12 @@ public class ProductionService {
     }
 
     public BigDecimal calculateGlebeProductivity(String glebeId){
+        Optional<Glebe> optionalGlebe = glebeRepository.findById(glebeId);
 
-        Glebe glebe = glebeRepository.findById(glebeId).get();
+        if(optionalGlebe.isEmpty()){
+            throw new ObjectNotFoundException("Talhão não encontrado!");
+        }
+        Glebe glebe = optionalGlebe.get();
         List<Production> productions = glebe.getProductions();
         BigDecimal productivity;
 
