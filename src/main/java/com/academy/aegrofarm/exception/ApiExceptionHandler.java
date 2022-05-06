@@ -31,4 +31,14 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, NotFound);
     }
 
+    @ExceptionHandler(value = {InvalidOperationException.class})
+    public ResponseEntity<Object> handleInvalidOperationException(InvalidOperationException e) {
+        HttpStatus Unprocessable = HttpStatus.UNPROCESSABLE_ENTITY;
+        ApiException apiException = new ApiException(e.getMessage(),
+                Unprocessable,
+                ZonedDateTime.now(ZoneId.of("Z")));
+
+        return new ResponseEntity<>(apiException, Unprocessable);
+    }
+
 }

@@ -2,12 +2,14 @@ package com.academy.aegrofarm.service;
 
 import com.academy.aegrofarm.entity.Farm;
 import com.academy.aegrofarm.entity.Glebe;
+import com.academy.aegrofarm.exception.InvalidOperationException;
 import com.academy.aegrofarm.exception.ObjectNotFoundException;
 import com.academy.aegrofarm.repository.FarmRepository;
 import com.academy.aegrofarm.repository.GlebeRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,13 +50,7 @@ public class FarmService {
 
     public boolean deleteFarm(String id) {
 
-        Optional<Farm> farmOptional = farmRepository.findById(id);
-
-        if(!farmOptional.isPresent()) {
-            throw new ObjectNotFoundException("Fazenda não encontrada!");
-        }
-
-        Farm farmToExclude = farmOptional.get();
+        Farm farmToExclude = getFarmById(id);
         List<Glebe> glebes = farmToExclude.getGlebes();
         List<String> glebesIds = glebes.stream()
                                 .map(Glebe::getId)
@@ -65,14 +61,26 @@ public class FarmService {
         return farmRepository.existsById(id);
     }
 
-    public BigDecimal calculateFarmProductivity(String id) {
-        Farm farm = farmRepository.findById(id).get();
-        BigDecimal productivity = farm.getGlebes().stream()
-                .map(Glebe::getProductivity)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
+    public void updateProductivity(String id){
+        Farm farm = getFarmById(id);
+        BigDecimal productivity = calculateFarmProductivity(farm);
         farm.setProductivity(productivity);
         farmRepository.save(farm);
+    }
+
+    public BigDecimal calculateFarmProductivity(Farm farm) {
+        BigDecimal farmArea = farm.getGlebes().stream()
+                .map(Glebe::getArea)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        if(farmArea.compareTo(BigDecimal.ZERO) <= 0){
+            throw new InvalidOperationException("Área inválida ou nula encontrada! Verifique a área dos talhões!");
+        }
+
+        BigDecimal weightedSumOfProductivities = farm.getGlebes().stream()
+                                                .map(glebe -> glebe.getProductivity().multiply(glebe.getArea()))
+                                                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal productivity = weightedSumOfProductivities.divide(farmArea, RoundingMode.HALF_UP);
 
         return productivity;
     }

@@ -42,6 +42,12 @@ public class FarmController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @PutMapping("/{id}/productivity")
+    public ResponseEntity updateProductivity(@PathVariable("id") String id){
+        farmService.updateProductivity(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity deleteFarm(@PathVariable("id") String id){
         farmService.deleteFarm(id);
