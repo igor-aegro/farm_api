@@ -2,7 +2,6 @@ package com.academy.aegrofarm.controller;
 
 import com.academy.aegrofarm.entity.Production;
 import com.academy.aegrofarm.service.ProductionService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1")
 public class ProductionController {
 
     @Autowired
     private final ProductionService productionService;
+
+    public ProductionController(ProductionService productionService) {
+        this.productionService = productionService;
+    }
 
     @GetMapping("glebes/{glebeId}/productions")
     public List<Production> getProductionsFromGlebe(@PathVariable String glebeId){

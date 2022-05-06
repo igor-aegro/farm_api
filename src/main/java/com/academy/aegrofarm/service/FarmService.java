@@ -5,7 +5,6 @@ import com.academy.aegrofarm.entity.Glebe;
 import com.academy.aegrofarm.exception.ObjectNotFoundException;
 import com.academy.aegrofarm.repository.FarmRepository;
 import com.academy.aegrofarm.repository.GlebeRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,12 +14,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class FarmService {
 
     private final FarmRepository farmRepository;
 
     private final GlebeRepository glebeRepository;
+
+    public FarmService(FarmRepository farmRepository, GlebeRepository glebeRepository) {
+        this.farmRepository = farmRepository;
+        this.glebeRepository = glebeRepository;
+    }
 
     public List<Farm> getFarms() {
         return farmRepository.findAll();

@@ -5,19 +5,22 @@ import com.academy.aegrofarm.entity.Glebe;
 import com.academy.aegrofarm.exception.ObjectNotFoundException;
 import com.academy.aegrofarm.repository.FarmRepository;
 import com.academy.aegrofarm.repository.GlebeRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class GlebeService {
 
     private final FarmRepository farmRepository;
 
     private final GlebeRepository glebeRepository;
+
+    public GlebeService(FarmRepository farmRepository, GlebeRepository glebeRepository) {
+        this.farmRepository = farmRepository;
+        this.glebeRepository = glebeRepository;
+    }
 
     public Glebe addGlebe(String farmId, Glebe glebe) {
 
