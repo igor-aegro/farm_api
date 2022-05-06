@@ -2,7 +2,6 @@ package com.academy.aegrofarm.controller;
 
 import com.academy.aegrofarm.entity.Glebe;
 import com.academy.aegrofarm.service.GlebeService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1")
 public class GlebeController {
 
     @Autowired
     private final GlebeService glebeService;
+
+    public GlebeController(GlebeService glebeService) {
+        this.glebeService = glebeService;
+    }
 
     @GetMapping("/glebes")
     public List<Glebe> getGlebes(){

@@ -2,6 +2,7 @@ package com.academy.aegrofarm;
 
 import com.academy.aegrofarm.entity.Farm;
 import com.academy.aegrofarm.entity.Glebe;
+import com.academy.aegrofarm.exception.InvalidOperationException;
 import com.academy.aegrofarm.repository.FarmRepository;
 import com.academy.aegrofarm.repository.GlebeRepository;
 import com.academy.aegrofarm.service.FarmService;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +36,18 @@ class FarmServiceTest {
         Farm farm = new Farm();
         farm.setId("testId");
         farm.setName("Fazenda de teste");
-        farm.setGlebes(new ArrayList<Glebe>());
+
+        List<Glebe> glebes = new ArrayList<>();
+        Glebe glebeA = new Glebe();
+        glebeA.setArea(new BigDecimal("20"));
+        glebeA.setProductivity(new BigDecimal("200"));
+        Glebe glebeB = new Glebe();
+        glebeB.setArea(new BigDecimal("10"));
+        glebeB.setProductivity(new BigDecimal("500"));
+        glebes.add(glebeA);
+        glebes.add(glebeB);
+
+        farm.setGlebes(glebes);
 
         return farm;
     }
@@ -90,6 +103,27 @@ class FarmServiceTest {
 
         farmService.deleteFarm(validFarm.getId());
 
+    }
+
+    @Test
+    void calculateFarmProductivity_allGood_shouldPass() {
+        Farm validFarm = createAValidFarm();
+
+        BigDecimal productivity = farmService.calculateFarmProductivity(validFarm);
+
+        Assert.assertEquals(productivity, new BigDecimal("300"));
+    }
+
+    @Test
+    void calculateFarmProductivity_shouldReturnError() {
+        Farm testFarm = createAValidFarm();
+        Glebe invalidGlebe = new Glebe();
+        invalidGlebe.setArea(BigDecimal.ZERO);
+        List<Glebe> glebes = new ArrayList<>();
+        glebes.add(invalidGlebe);
+        testFarm.setGlebes(glebes);
+
+        Assert.assertThrows(InvalidOperationException.class, () -> farmService.calculateFarmProductivity(testFarm));
     }
 
 }

@@ -2,7 +2,6 @@ package com.academy.aegrofarm.controller;
 
 import com.academy.aegrofarm.entity.Farm;
 import com.academy.aegrofarm.service.FarmService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +11,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/farms")
-@RequiredArgsConstructor
 public class FarmController {
 
     @Autowired
     private final FarmService farmService;
+
+    public FarmController(FarmService farmService) {
+        this.farmService = farmService;
+    }
 
     @GetMapping
     public List<Farm> getFarms() {
@@ -37,6 +39,12 @@ public class FarmController {
     @PutMapping("/{id}")
     public ResponseEntity updateFarm(@PathVariable("id") String id,@RequestBody Farm farm){
         Farm updatedFarm = farmService.updateFarm(id, farm);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PutMapping("/{id}/productivity")
+    public ResponseEntity updateProductivity(@PathVariable("id") String id){
+        farmService.updateProductivity(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

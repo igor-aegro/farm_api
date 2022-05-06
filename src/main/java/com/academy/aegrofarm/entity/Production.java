@@ -1,18 +1,10 @@
 package com.academy.aegrofarm.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Document(collection = "productions")
 public class Production {
 
@@ -20,6 +12,30 @@ public class Production {
     private String id;
 
     private BigDecimal production;
+
+    public Production(String id, BigDecimal production) {
+        this.id = id;
+        this.production = production;
+    }
+
+    public Production() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public BigDecimal getProduction() {
+        return production;
+    }
+
+    public void setProduction(BigDecimal production) {
+        this.production = production;
+    }
 
     @Override
     public String toString() {
