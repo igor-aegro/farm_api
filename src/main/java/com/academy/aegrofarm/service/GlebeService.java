@@ -17,9 +17,12 @@ public class GlebeService {
 
     private final GlebeRepository glebeRepository;
 
-    public GlebeService(FarmRepository farmRepository, GlebeRepository glebeRepository) {
+    private final ProductionService productionService;
+
+    public GlebeService(FarmRepository farmRepository, GlebeRepository glebeRepository, ProductionService productionService) {
         this.farmRepository = farmRepository;
         this.glebeRepository = glebeRepository;
+        this.productionService = productionService;
     }
 
 
@@ -30,7 +33,7 @@ public class GlebeService {
     public Glebe getGlebeById(String id) {
         Optional<Glebe> glebe = glebeRepository.findById(id);
         if(glebe.isEmpty()) {
-            throw new ObjectNotFoundException("Talhão não não encontrado!");
+            throw new ObjectNotFoundException("Talhão não encontrado!");
         }
         return glebe.get();
     }
@@ -67,6 +70,7 @@ public class GlebeService {
             throw new ObjectNotFoundException("Essa fazenda não existe! Por favor, tente mais tarde!");
         }
 
+        productionService.deleteProductionsFromGlebe(glebeId);
         Farm farm = farmRepository.findById(farmId).get();
         List<Glebe> glebes = farm.getGlebes();
         glebes.removeIf(it -> it.getId().equals(glebeId));

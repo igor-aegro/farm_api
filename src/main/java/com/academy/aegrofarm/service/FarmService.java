@@ -5,7 +5,6 @@ import com.academy.aegrofarm.entity.Glebe;
 import com.academy.aegrofarm.exception.InvalidOperationException;
 import com.academy.aegrofarm.exception.ObjectNotFoundException;
 import com.academy.aegrofarm.repository.FarmRepository;
-import com.academy.aegrofarm.repository.GlebeRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,18 +12,17 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class FarmService {
 
     private final FarmRepository farmRepository;
 
-    private final GlebeRepository glebeRepository;
+    private final GlebeService glebeService;
 
-    public FarmService(FarmRepository farmRepository, GlebeRepository glebeRepository) {
+    public FarmService(FarmRepository farmRepository, GlebeService glebeService) {
         this.farmRepository = farmRepository;
-        this.glebeRepository = glebeRepository;
+        this.glebeService = glebeService;
     }
 
     public List<Farm> getFarms() {
@@ -54,8 +52,11 @@ public class FarmService {
         List<Glebe> glebes = farmToExclude.getGlebes();
         List<String> glebesIds = glebes.stream()
                                 .map(Glebe::getId)
-                                .collect(Collectors.toList());
-        glebeRepository.deleteAllById(glebesIds);
+                                .toList();
+        for (String glebeId:
+             glebesIds) {
+            glebeService.deleteGlebe(id, glebeId);
+        }
         farmToExclude.setGlebes(new ArrayList<>());
         farmRepository.deleteById(id);
         return farmRepository.existsById(id);
@@ -63,8 +64,12 @@ public class FarmService {
 
     public void updateProductivity(String id){
         Farm farm = getFarmById(id);
-        BigDecimal productivity = calculateFarmProductivity(farm);
-        farm.setProductivity(productivity);
+        if(farm.getGlebes().isEmpty()) {
+            farm.setProductivity(BigDecimal.ZERO);
+        } else {
+            BigDecimal productivity = calculateFarmProductivity(farm);
+            farm.setProductivity(productivity);
+        }
         farmRepository.save(farm);
     }
 
@@ -80,9 +85,8 @@ public class FarmService {
         BigDecimal weightedSumOfProductivities = farm.getGlebes().stream()
                                                 .map(glebe -> glebe.getProductivity().multiply(glebe.getArea()))
                                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal productivity = weightedSumOfProductivities.divide(farmArea, RoundingMode.HALF_UP);
 
-        return productivity;
+        return weightedSumOfProductivities.divide(farmArea, RoundingMode.CEILING).setScale(2, RoundingMode.CEILING);
     }
 
 }
