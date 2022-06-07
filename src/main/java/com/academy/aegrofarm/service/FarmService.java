@@ -64,8 +64,12 @@ public class FarmService {
 
     public void updateProductivity(String id){
         Farm farm = getFarmById(id);
-        BigDecimal productivity = calculateFarmProductivity(farm);
-        farm.setProductivity(productivity);
+        if(farm.getGlebes().isEmpty()) {
+            farm.setProductivity(BigDecimal.ZERO);
+        } else {
+            BigDecimal productivity = calculateFarmProductivity(farm);
+            farm.setProductivity(productivity);
+        }
         farmRepository.save(farm);
     }
 
